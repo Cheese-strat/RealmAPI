@@ -3,15 +3,15 @@ const app = express();
 const PORT = 527;
 
 app.get("/", (req, res) => {
-	const userAgent = req.headers["user-agent"];
-	const accept = req.headers["accept"];
-	if (!userAgent) {
-		return res.send('{code:200,message:"hello world"}');
+	const UserAgent = req.headers["user-agent"];
+	const ContentType = req.headers["Content-Type"];
+	if (!UserAgent) {
+		return res.send('{code:400,message:"no user-agent header supplied"}');
 	}
-	if (!accept) {
-		return res.send('{code:400,message:"no accept header supplied"}');
+	if (!ContentType) {
+		return res.send("<p>hello world</p>");
 	}
-	console.log("user agent: ", userAgent);
-	return res.send("<p>hello world</p>");
+	console.log("user agent: ", UserAgent);
+	return res.send('{code:200,message"hello world"}');
 });
 app.listen(PORT);
