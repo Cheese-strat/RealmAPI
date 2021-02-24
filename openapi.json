@@ -1,0 +1,305 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "RealmAPI",
+        "description": "A small api to support the Realm Enviroment",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://win19-benserver:527/api/"
+        },
+        {
+            "url": "http://localhost:527/api/"
+        }
+    ],
+    "paths": {
+        "/{version}/games/deadbydaylight/shrine/:time": {
+            "get": {
+                "summary": "Returns the shrine active at that time",
+                "description": "The shrine is a weekly rotation of teachable perks",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "perks": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "minimum": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "owner": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/shrine/all": {
+            "get": {
+                "summary": "Returns all shrines",
+                "description": "The shrine is a weekly rotation of teachable perks",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "start_time": {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "minimum": 1
+                                            },
+                                            "end_time": {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "minimum": 1
+                                            },
+                                            "perks": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "format": "int32",
+                                                            "minimum": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "owner": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/shrine": {
+            "get": {
+                "summary": "Returns the shrine",
+                "description": "The shrine is a weekly rotation of teachable perks",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "perks": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "minimum": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "owner": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/info/generators": {
+            "get": {
+                "summary": "Returns information about generators",
+                "description": "Generators are an interact-able Prop and the main Objectives of Survivors",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "age": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "minimum": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/info/chests": {
+            "get": {
+                "summary": "Returns information about the chest prop",
+                "description": "Optional extended description in CommonMark or HTML.",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A JSON array of user names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/info/specific/{killername}": {
+            "get": {
+                "summary": "Returns a list of users.",
+                "description": "Optional extended description in CommonMark or HTML.",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A JSON array of user names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/info/walls": {
+            "get": {
+                "summary": "Returns a list of users.",
+                "description": "Optional extended description in CommonMark or HTML.",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A JSON array of user names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/info/windows": {
+            "get": {
+                "summary": "Returns a list of users.",
+                "description": "Optional extended description in CommonMark or HTML.",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A JSON array of user names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/info/totems": {
+            "get": {
+                "summary": "Returns a list of users.",
+                "description": "Optional extended description in CommonMark or HTML.",
+                "tags": [
+                    "/games/deadbydaylight"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A JSON array of user names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
