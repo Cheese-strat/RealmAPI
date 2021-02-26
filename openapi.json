@@ -14,13 +14,11 @@
         }
     ],
     "paths": {
-        "/{version}/games/deadbydaylight/shrine/:time": {
+        "/{version}/games/deadbydaylight/ingame/{mapname}": {
             "get": {
-                "summary": "Returns the shrine active at that time",
-                "description": "The shrine is a weekly rotation of teachable perks",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "summary": "Returns an array of all challenges",
+                "description": "archive challenges are challenges released with tomes ",
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "generator JSON object",
@@ -29,21 +27,96 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "perks": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "realm_name": {
+                                            "type": "string"
+                                        },
+                                        "lore": {
+                                            "type": "string"
+                                        },
+                                        "landmarks": {
                                             "type": "array",
                                             "items": {
+                                                "$ref": "#/components/schemas/Map_landmark"
+                                            }
+                                        },
+                                        "max_hooks": {
+                                            "type": "number"
+                                        },
+                                        "min_hooks": {
+                                            "type": "number"
+                                        },
+                                        "killer_shack": {
+                                            "type": "boolean"
+                                        },
+                                        "indoors": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/ingame/{mapname}/layout?type=link": {
+            "get": {
+                "summary": "Returns an array of all challenges",
+                "description": "archive challenges are challenges released with tomes ",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/ingame/{mapname}/callouts": {},
+        "/{version}/games/deadbydaylight/ingame/{mapname}/spawns?limit=killer": {},
+        "/{version}/games/deadbydaylight/stats/{playerid}?after=12345": {},
+        "/{version}/games/deadbydaylight/codes?limit=active": {
+            "get": {
+                "summary": "Returns info about a specific tome",
+                "description": "Tomes have 4 levels of challenges and are released with each chapter",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "code_text": {
+                                                "type": "string"
+                                            },
+                                            "reward": {
                                                 "type": "object",
                                                 "properties": {
-                                                    "id": {
+                                                    "reward_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "Bloodpoints",
+                                                            "Cosmetic",
+                                                            "Charm"
+                                                        ]
+                                                    },
+                                                    "amount": {
                                                         "type": "integer",
-                                                        "format": "int32",
                                                         "minimum": 1
                                                     },
-                                                    "name": {
-                                                        "type": "string"
-                                                    },
-                                                    "owner": {
-                                                        "type": "string"
+                                                    "event": {
+                                                        "type": "boolean"
                                                     }
                                                 }
                                             }
@@ -56,13 +129,14 @@
                 }
             }
         },
-        "/{version}/games/deadbydaylight/shrine/all": {
+        "/{version}/games/deadbydaylight/skins/{charactername}?filter=playerid": {},
+        "/{version}/games/deadbydaylight/leaks/skins": {},
+        "/{version}/games/deadbydaylight/leaks/rift": {},
+        "/{version}/games/deadbydaylight/leaks/tome": {
             "get": {
-                "summary": "Returns all shrines",
-                "description": "The shrine is a weekly rotation of teachable perks",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "summary": "Returns info about a specific tome",
+                "description": "Tomes have 4 levels of challenges and are released with each chapter",
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "generator JSON object",
@@ -71,38 +145,176 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "start_time": {
-                                                "type": "integer",
-                                                "format": "int32",
-                                                "minimum": 1
-                                            },
-                                            "end_time": {
-                                                "type": "integer",
-                                                "format": "int32",
-                                                "minimum": 1
-                                            },
-                                            "perks": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "integer",
-                                                            "format": "int32",
-                                                            "minimum": 1
-                                                        },
-                                                        "name": {
-                                                            "type": "string"
-                                                        },
-                                                        "owner": {
-                                                            "type": "string"
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        "$ref": "#/components/schemas/Tome"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/leaks/perks": {
+            "get": {
+                "summary": "Returns info about a specific tome",
+                "description": "Tomes have 4 levels of challenges and are released with each chapter",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Perk"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/perks/character/{charactername}": {},
+        "/{version}/games/deadbydaylight/perks/owned/{playerid}": {},
+        "/{version}/games/deadbydaylight/perks/all?name=predator": {},
+        "/{version}/games/deadbydaylight/items/{itemname}": {},
+        "/{version}/games/deadbydaylight/items/all": {},
+        "/{version}/games/deadbydaylight/items/addons/{addonname}": {},
+        "/{version}/games/deadbydaylight/items/addons/all": {},
+        "/{version}/games/deadbydaylight/builds/item/{itembuildname}": {},
+        "/{version}/games/deadbydaylight/builds/perks/{perkbuildname}": {},
+        "/{version}/games/deadbydaylight/builds/random?limit=perks": {},
+        "/{version}/games/deadbydaylight/builds/full/{buildname}": {},
+        "/{version}/games/deadbydaylight/builds/swf/{buildname}": {},
+        "/{version}/games/deadbydaylight/builds/all": {},
+        "/{version}/games/deadbydaylight/killers/{killername}/power": {},
+        "/{version}/games/deadbydaylight/killers/{killername}/addons?rarity=common": {},
+        "/{version}/games/deadbydaylight/survivors/{survivorname}": {},
+        "/{version}/games/deadbydaylight/store/featured?limit=10": {},
+        "/{version}/games/deadbydaylight/store/characters/{character}": {},
+        "/{version}/games/deadbydaylight/store/dlc/{dlcname}": {},
+        "/{version}/games/deadbydaylight/archive /tomes/{tomeid}?level=4&limit=master": {},
+        "/{version}/games/deadbydaylight/archive/limited/character/{charactername}": {},
+        "/{version}/games/deadbydaylight/archive/limited/perk/{perkname}": {},
+        "/{version}/games/deadbydaylight/archive/limited/teachables/{charactername}": {},
+        "/{version}/games/deadbydaylight/archive/limited/all": {},
+        "/{version}/games/deadbydaylight/archive/challenges/{challengeid}": {
+            "get": {
+                "summary": "Returns a specific challenge",
+                "description": "archive challenges are challenges released with tomes ",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Archive_challenge"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/archive/challenges": {
+            "get": {
+                "summary": "Returns an array of all challenges",
+                "description": "archive challenges are challenges released with tomes ",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Archive_challenge"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/archive/tomes": {
+            "get": {
+                "summary": "Returns an array of all of the tomes",
+                "description": "Tomes have 4 levels of challenges and are released with each chapter",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Tome"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/archive/tomes/{tomeid}": {
+            "get": {
+                "summary": "Returns info about a specific tome",
+                "description": "Tomes have 4 levels of challenges and are released with each chapter",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Tome"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/shrine/{time}": {
+            "get": {
+                "summary": "Returns the shrine active at that time",
+                "description": "The shrine is a weekly rotation of teachable perks",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Shrine"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/shrine/all": {
+            "get": {
+                "summary": "Returns all shrines",
+                "description": "The shrine is a weekly rotation of teachable perks",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Shrine"
                                     }
                                 }
                             }
@@ -115,37 +327,14 @@
             "get": {
                 "summary": "Returns the shrine",
                 "description": "The shrine is a weekly rotation of teachable perks",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "generator JSON object",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "perks": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "format": "int32",
-                                                        "minimum": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string"
-                                                    },
-                                                    "owner": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Shrine"
                                 }
                             }
                         }
@@ -157,9 +346,7 @@
             "get": {
                 "summary": "Returns information about generators",
                 "description": "Generators are an interact-able Prop and the main Objectives of Survivors",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "generator JSON object",
@@ -185,9 +372,7 @@
             "get": {
                 "summary": "Returns information about the chest prop",
                 "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "A JSON array of user names",
@@ -209,9 +394,7 @@
             "get": {
                 "summary": "Returns a list of users.",
                 "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "A JSON array of user names",
@@ -233,9 +416,7 @@
             "get": {
                 "summary": "Returns a list of users.",
                 "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "A JSON array of user names",
@@ -257,8 +438,14 @@
             "get": {
                 "summary": "Returns a list of users.",
                 "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [
-                    "/games/deadbydaylight"
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "schema": {},
+                        "required": true
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -281,9 +468,7 @@
             "get": {
                 "summary": "Returns a list of users.",
                 "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [
-                    "/games/deadbydaylight"
-                ],
+                "tags": [],
                 "responses": {
                     "200": {
                         "description": "A JSON array of user names",
@@ -299,6 +484,302 @@
                         }
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Tome": {
+                "type": "object",
+                "properties": {
+                    "characters": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "number"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "specific_challenges": {
+                                    "type": "object",
+                                    "properties": {
+                                        "character": {
+                                            "type": "number"
+                                        },
+                                        "teachables": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Shrine": {
+                "type": "object",
+                "properties": {
+                    "perks": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "format": "int32",
+                                    "minimum": 1
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "owner": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Perk": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 1
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Archive_challenge": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "challenge_id": {
+                        "type": "number",
+                        "minimum": 1
+                    },
+                    "tome_id": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 6
+                    },
+                    "level_number": {
+                        "type": "number"
+                    },
+                    "master": {
+                        "type": "boolean"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "required_side": {
+                        "type": "string",
+                        "description": "Which side must be selected for the challenge to be active",
+                        "enum": [
+                            "Killer",
+                            "Survivor",
+                            "Either"
+                        ]
+                    }
+                }
+            },
+            "Map_landmark": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "lockers": {
+                        "type": "number",
+                        "minimum": 0
+                    },
+                    "generator": {
+                        "type": "string",
+                        "enum": [
+                            "possible",
+                            "guaranteed",
+                            "not_possible"
+                        ]
+                    },
+                    "chest": {
+                        "type": "string",
+                        "enum": [
+                            "possible",
+                            "guaranteed",
+                            "not_possible"
+                        ]
+                    },
+                    "basement": {
+                        "type": "string",
+                        "enum": [
+                            "possible",
+                            "guaranteed",
+                            "not_possible"
+                        ]
+                    },
+                    "entrance_count": {
+                        "type": "number",
+                        "minimum": 0
+                    }
+                }
+            },
+            "Map_tile": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "lockers": {
+                        "type": "number",
+                        "minimum": 0
+                    },
+                    "generator": {
+                        "type": "string",
+                        "enum": [
+                            "possible",
+                            "guaranteed",
+                            "not_possible"
+                        ]
+                    },
+                    "chest": {
+                        "type": "string",
+                        "enum": [
+                            "possible",
+                            "guaranteed",
+                            "not_possible"
+                        ]
+                    },
+                    "is_maze": {
+                        "type": "boolean"
+                    },
+                    "map_specific": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Killer": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "official_name": {
+                        "type": "string"
+                    },
+                    "nickname": {
+                        "type": "string"
+                    },
+                    "character_name": {
+                        "type": "string"
+                    },
+                    "lore": {
+                        "type": "object",
+                        "properties": {}
+                    },
+                    "gender": {
+                        "type": "string"
+                    },
+                    "nationality": {
+                        "type": "string"
+                    },
+                    "power": {
+                        "type": "object",
+                        "properties": {}
+                    },
+                    "movement_speed": {
+                        "type": "number"
+                    },
+                    "terror_radius": {
+                        "type": "number"
+                    },
+                    "liscensed": {
+                        "type": "boolean"
+                    },
+                    "chapter": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "killer": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "survivors": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "teachables": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "achievements": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "integer"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "icon_url": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "height": {
+                        "type": "string",
+                        "enum": [
+                            "Tall",
+                            "short"
+                        ]
+                    }
+                }
+            },
+            "Survivor": {
+                "type": "object",
+                "properties": {}
             }
         }
     }

@@ -5,7 +5,7 @@ function NotFound(req: Request, res: Response) {
 
 	// respond with html page
 	if (req.accepts("html")) {
-		res.render("404", {url: req.url});
+		res.send("<p>No Page found</p>");
 		return;
 	}
 
@@ -16,7 +16,7 @@ function NotFound(req: Request, res: Response) {
 	}
 
 	// default to plain-text. send()
-	res.type("txt").send("Not found");
+	res.send("Not found");
 }
 
 export default NotFound;
