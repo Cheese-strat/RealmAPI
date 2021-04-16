@@ -17,7 +17,6 @@
         "/{version}/games/deadbydaylight/ingame/{mapname}": {
             "get": {
                 "summary": "Returns an array of all challenges",
-                "description": "archive challenges are challenges released with tomes ",
                 "tags": [],
                 "responses": {
                     "200": {
@@ -65,7 +64,6 @@
         "/{version}/games/deadbydaylight/ingame/{mapname}/layout?type=link": {
             "get": {
                 "summary": "Returns an array of all challenges",
-                "description": "archive challenges are challenges released with tomes ",
                 "tags": [],
                 "responses": {
                     "200": {
@@ -79,13 +77,10 @@
                 }
             }
         },
-        "/{version}/games/deadbydaylight/ingame/{mapname}/callouts": {},
         "/{version}/games/deadbydaylight/ingame/{mapname}/spawns?limit=killer": {},
-        "/{version}/games/deadbydaylight/stats/{playerid}?after=12345": {},
         "/{version}/games/deadbydaylight/codes?limit=active": {
             "get": {
-                "summary": "Returns info about a specific tome",
-                "description": "Tomes have 4 levels of challenges and are released with each chapter",
+                "summary": "the codes redeemable in the store",
                 "tags": [],
                 "responses": {
                     "200": {
@@ -119,6 +114,12 @@
                                                         "type": "boolean"
                                                     }
                                                 }
+                                            },
+                                            "start_date": {
+                                                "type": "integer"
+                                            },
+                                            "end_date": {
+                                                "type": "integer"
                                             }
                                         }
                                     }
@@ -129,23 +130,100 @@
                 }
             }
         },
-        "/{version}/games/deadbydaylight/skins/{charactername}?filter=playerid": {},
-        "/{version}/games/deadbydaylight/leaks/skins": {},
-        "/{version}/games/deadbydaylight/leaks/rift": {},
-        "/{version}/games/deadbydaylight/leaks/tome": {
+        "/{version}/games/deadbydaylight/skins/{charactername}?filter=head": {
             "get": {
-                "summary": "Returns info about a specific tome",
-                "description": "Tomes have 4 levels of challenges and are released with each chapter",
-                "tags": [],
                 "responses": {
                     "200": {
-                        "description": "generator JSON object",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Tome"
+                                        "$ref": "#/components/schemas/Cosmetic"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/leaks/skins": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "Cosmetic": {
+                                                "$ref": "#/components/schemas/Cosmetic"
+                                            },
+                                            "predicted_release_chapter": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "leaked_by": {
+                                                "type": "string"
+                                            },
+                                            "leaked_at": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/leaks/rift": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "possible_killers": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/Killer"
+                                                }
+                                            },
+                                            "possible_survivors": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/Survivor"
+                                                }
+                                            },
+                                            "possible_cosmetics": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/Cosmetic"
+                                                }
+                                            },
+                                            "leaked_by": {
+                                                "type": "string"
+                                            },
+                                            "leaked_at": {
+                                                "type": "integer"
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -156,8 +234,7 @@
         },
         "/{version}/games/deadbydaylight/leaks/perks": {
             "get": {
-                "summary": "Returns info about a specific tome",
-                "description": "Tomes have 4 levels of challenges and are released with each chapter",
+                "summary": "The leaked perks",
                 "tags": [],
                 "responses": {
                     "200": {
@@ -176,42 +253,130 @@
                 }
             }
         },
-        "/{version}/games/deadbydaylight/perks/character/{charactername}": {},
-        "/{version}/games/deadbydaylight/perks/owned/{playerid}": {},
-        "/{version}/games/deadbydaylight/perks/all?name=predator": {},
+        "/{version}/games/deadbydaylight/perks/{perk_id}": {
+            "get": {
+                "summary": "A specific perk",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Perk"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/perks": {
+            "get": {
+                "summary": "data about a specific perk",
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Perk"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/{version}/games/deadbydaylight/items/{itemname}": {},
         "/{version}/games/deadbydaylight/items/all": {},
         "/{version}/games/deadbydaylight/items/addons/{addonname}": {},
         "/{version}/games/deadbydaylight/items/addons/all": {},
-        "/{version}/games/deadbydaylight/builds/item/{itembuildname}": {},
-        "/{version}/games/deadbydaylight/builds/perks/{perkbuildname}": {},
+        "/{version}/games/deadbydaylight/builds/item/{itembuildname}": {
+            "get": {
+                "summary": "Returns info about a build",
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "item": {
+                                            "type": "string"
+                                        },
+                                        "addon_one": {
+                                            "type": "string"
+                                        },
+                                        "addon_two": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{version}/games/deadbydaylight/builds/perks/{perkbuildname}": {
+            "get": {
+                "summary": "Returns info about a build",
+                "responses": {
+                    "200": {
+                        "description": "generator JSON object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "perks": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "item": {
+                                            "type": "object",
+                                            "properties": {
+                                                "item_name": {
+                                                    "type": "string"
+                                                },
+                                                "addons": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/{version}/games/deadbydaylight/builds/random?limit=perks": {},
         "/{version}/games/deadbydaylight/builds/full/{buildname}": {},
         "/{version}/games/deadbydaylight/builds/swf/{buildname}": {},
-        "/{version}/games/deadbydaylight/builds/all": {},
-        "/{version}/games/deadbydaylight/killers/{killername}/power": {},
-        "/{version}/games/deadbydaylight/killers/{killername}/addons?rarity=common": {},
-        "/{version}/games/deadbydaylight/survivors/{survivorname}": {},
-        "/{version}/games/deadbydaylight/store/featured?limit=10": {},
-        "/{version}/games/deadbydaylight/store/characters/{character}": {},
-        "/{version}/games/deadbydaylight/store/dlc/{dlcname}": {},
-        "/{version}/games/deadbydaylight/archive /tomes/{tomeid}?level=4&limit=master": {},
-        "/{version}/games/deadbydaylight/archive/limited/character/{charactername}": {},
-        "/{version}/games/deadbydaylight/archive/limited/perk/{perkname}": {},
-        "/{version}/games/deadbydaylight/archive/limited/teachables/{charactername}": {},
-        "/{version}/games/deadbydaylight/archive/limited/all": {},
-        "/{version}/games/deadbydaylight/archive/challenges/{challengeid}": {
+        "/{version}/games/deadbydaylight/builds": {},
+        "/{version}/games/deadbydaylight/survivors/{survivorname}": {
             "get": {
-                "summary": "Returns a specific challenge",
-                "description": "archive challenges are challenges released with tomes ",
-                "tags": [],
+                "summary": "Returns data about a specific survivor",
                 "responses": {
                     "200": {
                         "description": "generator JSON object",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Archive_challenge"
+                                    "$ref": "#/components/schemas/Survivor"
                                 }
                             }
                         }
@@ -219,11 +384,9 @@
                 }
             }
         },
-        "/{version}/games/deadbydaylight/archive/challenges": {
+        "/{version}/games/deadbydaylight/survivors": {
             "get": {
-                "summary": "Returns an array of all challenges",
-                "description": "archive challenges are challenges released with tomes ",
-                "tags": [],
+                "summary": "Returns data about a specific survivor",
                 "responses": {
                     "200": {
                         "description": "generator JSON object",
@@ -232,49 +395,8 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Archive_challenge"
+                                        "$ref": "#/components/schemas/Survivor"
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/{version}/games/deadbydaylight/archive/tomes": {
-            "get": {
-                "summary": "Returns an array of all of the tomes",
-                "description": "Tomes have 4 levels of challenges and are released with each chapter",
-                "tags": [],
-                "responses": {
-                    "200": {
-                        "description": "generator JSON object",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Tome"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/{version}/games/deadbydaylight/archive/tomes/{tomeid}": {
-            "get": {
-                "summary": "Returns info about a specific tome",
-                "description": "Tomes have 4 levels of challenges and are released with each chapter",
-                "tags": [],
-                "responses": {
-                    "200": {
-                        "description": "generator JSON object",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Tome"
                                 }
                             }
                         }
@@ -341,204 +463,17 @@
                     }
                 }
             }
-        },
-        "/{version}/games/deadbydaylight/info/generators": {
-            "get": {
-                "summary": "Returns information about generators",
-                "description": "Generators are an interact-able Prop and the main Objectives of Survivors",
-                "tags": [],
-                "responses": {
-                    "200": {
-                        "description": "generator JSON object",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "age": {
-                                            "type": "integer",
-                                            "format": "int32",
-                                            "minimum": 0
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/{version}/games/deadbydaylight/info/chests": {
-            "get": {
-                "summary": "Returns information about the chest prop",
-                "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [],
-                "responses": {
-                    "200": {
-                        "description": "A JSON array of user names",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/{version}/games/deadbydaylight/info/specific/{killername}": {
-            "get": {
-                "summary": "Returns a list of users.",
-                "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [],
-                "responses": {
-                    "200": {
-                        "description": "A JSON array of user names",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/{version}/games/deadbydaylight/info/walls": {
-            "get": {
-                "summary": "Returns a list of users.",
-                "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [],
-                "responses": {
-                    "200": {
-                        "description": "A JSON array of user names",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/{version}/games/deadbydaylight/info/windows": {
-            "get": {
-                "summary": "Returns a list of users.",
-                "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [],
-                "parameters": [
-                    {
-                        "name": "version",
-                        "in": "path",
-                        "schema": {},
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "A JSON array of user names",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/{version}/games/deadbydaylight/info/totems": {
-            "get": {
-                "summary": "Returns a list of users.",
-                "description": "Optional extended description in CommonMark or HTML.",
-                "tags": [],
-                "responses": {
-                    "200": {
-                        "description": "A JSON array of user names",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     },
     "components": {
         "schemas": {
-            "Tome": {
-                "type": "object",
-                "properties": {
-                    "characters": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "number"
-                                },
-                                "name": {
-                                    "type": "string"
-                                },
-                                "specific_challenges": {
-                                    "type": "object",
-                                    "properties": {
-                                        "character": {
-                                            "type": "number"
-                                        },
-                                        "teachables": {
-                                            "type": "number"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "Shrine": {
                 "type": "object",
                 "properties": {
                     "perks": {
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "format": "int32",
-                                    "minimum": 1
-                                },
-                                "name": {
-                                    "type": "string"
-                                },
-                                "owner": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/components/schemas/Perk"
                         }
                     }
                 }
@@ -556,41 +491,6 @@
                     },
                     "owner": {
                         "type": "string"
-                    }
-                }
-            },
-            "Archive_challenge": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "challenge_id": {
-                        "type": "number",
-                        "minimum": 1
-                    },
-                    "tome_id": {
-                        "type": "number",
-                        "minimum": 1,
-                        "maximum": 6
-                    },
-                    "level_number": {
-                        "type": "number"
-                    },
-                    "master": {
-                        "type": "boolean"
-                    },
-                    "text": {
-                        "type": "string"
-                    },
-                    "required_side": {
-                        "type": "string",
-                        "description": "Which side must be selected for the challenge to be active",
-                        "enum": [
-                            "Killer",
-                            "Survivor",
-                            "Either"
-                        ]
                     }
                 }
             },
@@ -780,6 +680,34 @@
             "Survivor": {
                 "type": "object",
                 "properties": {}
+            },
+            "Cosmetic": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Build": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "perks": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     }
